@@ -1,0 +1,21 @@
+#GameBord{
+
+			position: absolute;
+			border : 2px solid black;
+			border-top: 0px;
+			width: 500px;
+			height: 500px;
+			left: 200px;
+			top: 100px;
+
+		}
+
+
+img{
+
+
+	width: 50px;
+	height: 50px;
+	background-color: #f00;
+	position: absolute;
+}
