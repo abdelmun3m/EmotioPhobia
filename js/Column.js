@@ -18,6 +18,7 @@ var Column = function(_surface,_width,_index){
 		//if this ball is in the array 
 		//but the surface of column to to the buttom of the removed ball 
 		if(row >= 0 && row in this.balls){
+			
 			this.balls[row].removeBall(); 
 			this.surface = this.balls[row].bottom;
 			console.log("surface ",this.surface);

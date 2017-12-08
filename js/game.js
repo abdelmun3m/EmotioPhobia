@@ -14,14 +14,23 @@ window.addEventListener("load",function(){
 		StartButton.style.display = "display";
 		//StartGame();
 
+
+		if(Level == 1){
+			objectSpeed = 5 ;
+		}else if(Level == 2){
+			objectSpeed = 8;
+		}else if(Level == 3){
+			objectSpeed = 10; 
+		}
 		StartButton.onclick = function(){
 			StartGame();
+
 			setTimeout(function(){
 				CurrentBall = creatrRandomBall(true,-1);
-			}, 1000);
+			}, 500);
 
 		startTimer();	
-			
+		StartButton.disabled = "true";	
 		};
 	}else{
 
@@ -90,6 +99,9 @@ creatrRandomBall = function(flying,col){
 chickMatch = function(ball){
 
 
+
+	//marke balls that should be removed which match with the current ball
+	//get all matches then loop again to delete marked balls in each column 	
 	var col = ball.column.index ; 
 	var row = ball.id ;	
 
@@ -199,25 +211,27 @@ chickMatch = function(ball){
 		}
 	}
 
-//console.log("d2 : ", dStart2 , dEnd2);
+
+
 //---------------------------------------------------------------------------
 
 
 
-//console.log("d1",dStart1,dEnd1 ,"d2",dStart2,dEnd2,"v" ,vStart,vEnd,"d",down);
 
-
-
+	
 	var flag = 0;
-	for(var i = col-2 ; i <= col + 2 ; i++){
-
+	//for(var i = col-2 ; i <= col + 2 ; i++){
+	for(var i = 0 ; i <= 9 ; i++){
+		//loop on every column in range -2 -> +2 of current ball 
+		//remove aech ball in this column which is marked as removed 
 		if(!(i in columns)) continue;
 
 		if( (dEnd2 - dStart2 > 1) && i >= dStart2 && i != col && i <= dEnd2){
 			flag = 1;
 			console.log('remove horizontal',dEnd2 , dStart2);
-			columns[i].removeBall( (row + (i-col)));
-			columns[i].normalize((row + (i-col)));
+			/*columns[i].removeBall( (row + (i-col)));
+			columns[i].normalize((row + (i-col)));*/
+			onDeletedAnimation(i,(row + (i-col)));
 
 		}
 
@@ -225,8 +239,9 @@ chickMatch = function(ball){
 		if( (dEnd1 - dStart1 > 1) && i >= dStart1 && i != col && i <= dEnd1){
 			flag = 1;
 			console.log('remove diagonal 1',dEnd1 , dStart1);
-			columns[i].removeBall( (row + (col-i)));
-			columns[i].normalize((row + (col-i)));
+			/*columns[i].removeBall( (row + (col-i)));
+			columns[i].normalize((row + (col-i)));*/
+			onDeletedAnimation(i,(row + (col-i)));
 
 		}
 
@@ -235,8 +250,9 @@ chickMatch = function(ball){
 			if( ((vEnd-vStart) > 1) && i >= vStart&& i != col && i <= vEnd){
 				flag = 1;
 				console.log('remove diagonal 2',vEnd-vStart);
-				columns[i].removeBall(row);
-				columns[i].normalize(row);
+				/*columns[i].removeBall(row);
+				columns[i].normalize(row);*/
+				onDeletedAnimation(i,row );
 			}
 		}
 
@@ -245,26 +261,31 @@ chickMatch = function(ball){
 
 	if( (eDown - sDown > 1) ){	
 			flag = 0;
+
+			var matchNum = columns[col].balls[row].color;
 			for(var i = eDown ; i >= sDown ; i--){
 				console.log('remove down',sDown,eDown);
-				columns[col].removeBall(i);
+				//columns[col].removeBall(i);
+				onDeletedAnimation(col,i);
 			}
-			columns[col].normalize(sDown);
+			addMatch(matchNum-1);
+			//columns[col].normalize(sDown);
 	}
 
 	if(flag){
 		console.log('remove ball');
 		var matchNum = columns[col].balls[row].color;
-		matches[matchNum]++;
+		addMatch(matchNum-1);
 		console.log(matches);
-		columns[col].removeBall(row);
-		columns[col].normalize(row);
+		/*columns[col].removeBall(row);
+		columns[col].normalize(row);*/
+		onDeletedAnimation(col,row);
 	}
 
 
 
 
-checkIfGameEnded();
+	checkIfGameEnded();
 
 
 }
@@ -275,6 +296,8 @@ checkIfGameEnded = function(){
 	//this function check if board is empty or if any colum if full of balls 
 	//to stop the game 
 
+
+
 		var NumberofEmbtyColumns = 0;
 
 		columns.forEach(function(elm){
@@ -283,18 +306,58 @@ checkIfGameEnded = function(){
 					NumberofEmbtyColumns++;
 				}
 			if(elm.surface <= 0){
-				GameEnded = true;
+				//GameEnded = true;
+				endGame(1);//user lose the game 
 			};
 		});
 
 		if(NumberofEmbtyColumns >= gameColumnsNumber ){
-			GameEnded = true;
+			//GameEnded = true;
+			endGame(2);//user finished the game and won
 		}
 
-		if(GameEnded){
-			// what will happen when game ended
-		}
 		return GameEnded;
+}
+
+
+
+
+endGame=function(lose){
+	GameEnded = true;
+	clearInterval(clockTimer);
+	CurrentBall = null;
+	if(lose == 1){
+		alert("Sorry! You lose the game");
+	}else if(lose == 2){
+		alert("you Won");
+	}else if(lose == 3){
+
+		alert("Time Out");
+	}
+}
+
+onDeletedAnimation=function(col , row){
+
+
+	//change Imag of deleted balls before delete
+	columns[col].balls[row].changeImageOnRemove();
+
+	setTimeout(function(){
+		columns[col].removeBall(row);
+		columns[col].normalize(row);
+	}, 500);
+
+}
+
+
+
+addMatch=function(match){
+
+	//change the counter of matchesd balls and uptdate UI  
+	
+	matchValuesDivs = document.getElementsByClassName("matchesVAlue");
+	matchValuesDivs[match].innerText = ++matches[match];
+
 }
 
 
@@ -303,7 +366,7 @@ startTimer =  function(){
 
 	var second = 0;
 	var mint = 0;
-	var clockTimer = null;
+	
 
 
 	if(clockTimer != null){
@@ -326,9 +389,10 @@ startTimer =  function(){
 	/*if(mint < 10){
 		Smint = "0"+mint;
 	}*/
-	if(mint == 2 ){
-		clearInterval(clockTimer);
-		GameEnded = true;
+	if(mint >= gameTimerDuration){
+		/*clearInterval(clockTimer);
+		GameEnded = true;*/
+		endGame(3);//time out
 
 	}
 
@@ -339,6 +403,11 @@ startTimer =  function(){
 
 
 }
+
+
+
+
+
 
 
 

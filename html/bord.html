@@ -19,6 +19,8 @@
 		creatrRandomBall = null;
 		GameEnded = false;
 		matches = [0,0,0,0,0];
+		clockTimer = null;
+		gameTimerDuration = 2;
 
 		chickMatch=function(){}; 
 	</script>
@@ -37,6 +39,25 @@
 	<div id = "welcome"></div>
 	<button id="StartButton">Start Game</button>
 	<div id="timer"></div>
+	
+	<div id="matchesBord">
+		<div >
+			<img class="ballsImages" src="../img/p1.jpg">
+			<img class="ballsImages" src="../img/p2.jpg">
+			<img class="ballsImages" src="../img/p3.jpg">
+			<img class="ballsImages" src="../img/p4.jpg">
+			<img class="ballsImages" src="../img/p5.jpg">
+
+		</div>
+		<div >
+			<p class="matchesVAlue">0</p>
+			<p class="matchesVAlue">0</p>
+			<p class="matchesVAlue">0</p>
+			<p class="matchesVAlue">0</p>
+			<p class="matchesVAlue">0</p>
+		</div>
+
+	</div>
 
 	<div id="GameBord">
 		

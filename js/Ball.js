@@ -97,8 +97,8 @@ var Ball = function(_column,_width,_speed) {
 		}
 		this.removeBall = function(){
 		//	console.log("this ball",this.column.index,id);
-			this.changeImageOnRemove();
-			//GameBord.removeChild(this.img); 
+			
+			GameBord.removeChild(this.img); 
 		}
 
 		this.getRandomColor = function(){
@@ -135,17 +135,20 @@ var Ball = function(_column,_width,_speed) {
 
 			//if( this.color == 1  || this.color == 1 || this.color == 1)
 			
-			if(tembBall.color == 1 || tembBall.color == 3 )
+			if(tembBall.color == 2 || tembBall.color == 4 )
 				{tembBall.img.src = "../img/plol.jpg";}
 			else {tembBall.img.src = "../img/pbad.jpg";}
-			setTimeout(function(){
+			
+			/*setTimeout(function(){
 				tembBall.img.src = temp ;
-				GameBord.removeChild(tembBall.img); 
-			}, 500);
+				//GameBord.removeChild(tembBall.img); 
+			}, 500);*/
 			
 
 
 		}
+
+
 
 
 	
