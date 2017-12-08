@@ -7,6 +7,7 @@
 			height: 500px;
 			left: 200px;
 			top: 100px;
+			background-color: #ccc;
 
 		}
 
@@ -18,4 +19,5 @@ img{
 	height: 50px;
 	background-color: #f00;
 	position: absolute;
+
 }

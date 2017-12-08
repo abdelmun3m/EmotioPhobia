@@ -1,7 +1,36 @@
 
+
 window.addEventListener("load",function(){
 
-		StartGame();
+
+
+	var Name = window.location.href.split("?")[1].split("&")[0].split("=")[1];
+	var Level = window.location.href.split("?")[1].split("&")[1].split("=")[1];
+
+
+	if(Name){
+
+		welcome.innerText = "Welcome "+ Name;
+		StartButton.style.display = "display";
+		//StartGame();
+
+		StartButton.onclick = function(){
+			StartGame();
+			setTimeout(function(){
+				CurrentBall = creatrRandomBall(true,-1);
+			}, 1000);
+
+		startTimer();	
+			
+		};
+	}else{
+
+
+		StartButton.style.display = "none";
+	}
+
+
+
 
 });
 
@@ -16,19 +45,17 @@ function StartGame(){
 
 		columns[i] = new Column(intialsurface,elementWidth,i);
 
-		creatrRandomBall(false,i)//static Ball 
+		var randomStaticBallinColumn = Math.ceil(Math.random() * 3 );
+		for(var j = 0 ; j <  randomStaticBallinColumn ; j++) 
+			creatrRandomBall(false,i)//static Ball 
 	}
 	
-	//creatrRandomBall(false,0)//static Ball 
-		
-
-
 
 		window.addEventListener("keydown",function(event){
 				
 				if(event.keyCode == 32 ){//space
 					
-					CurrentBall = creatrRandomBall(true,-1);//create flaying ball in random colum 
+					//CurrentBall = creatrRandomBall(true,-1);//create flaying ball in random colum 
 
 				}else if(event.keyCode == 39){//right
 					CurrentBall.moveRight();
@@ -66,6 +93,7 @@ chickMatch = function(ball){
 	var col = ball.column.index ; 
 	var row = ball.id ;	
 
+	
 
 //-----------------------check horizontal--------------------------------------------
 	
@@ -226,10 +254,17 @@ chickMatch = function(ball){
 
 	if(flag){
 		console.log('remove ball');
+		var matchNum = columns[col].balls[row].color;
+		matches[matchNum]++;
+		console.log(matches);
 		columns[col].removeBall(row);
 		columns[col].normalize(row);
 	}
 
+
+
+
+checkIfGameEnded();
 
 
 }
@@ -259,5 +294,51 @@ checkIfGameEnded = function(){
 		if(GameEnded){
 			// what will happen when game ended
 		}
+		return GameEnded;
+}
+
+
+
+startTimer =  function(){
+
+	var second = 0;
+	var mint = 0;
+	var clockTimer = null;
+
+
+	if(clockTimer != null){
+		return ;
+	}
+
+	clockTimer = setInterval(function(){
+		second++;
+	if(second > 59){
+		mint++;
+		second = 0 ;
+	}
+
+	Ssecond = second ; 
+	Smint = mint;
+	if(second < 10){
+		Ssecond = "0"+second;
+	}
+
+	/*if(mint < 10){
+		Smint = "0"+mint;
+	}*/
+	if(mint == 2 ){
+		clearInterval(clockTimer);
+		GameEnded = true;
+
+	}
+
+
+	timer.innerText = Smint + " : " + Ssecond;
+
+	},1000);
+
 
 }
+
+
+

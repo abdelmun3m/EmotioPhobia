@@ -6,7 +6,7 @@ var Ball = function(_column,_width,_speed) {
 		this.column = _column;
 		this.width  = _width; 
 		this.height  = _width;
-		this.color = "";
+		this.color = ""; // represent img 
 		this.isflying = true;
 		this.id = -1 ;
 
@@ -43,7 +43,8 @@ var Ball = function(_column,_width,_speed) {
 			this.img.style.top = this.positionY+"px";
 			this. bottom = this.positionY + this.height;
 			this.color = this.getRandomColor();
-			this.img.style.background = this.color;
+			//this.img.style.background = this.color;
+			this.img.src = "../img/p"+this.color+".jpg";
 		}
 		this.falling = function(){
 			var t = this;
@@ -96,7 +97,8 @@ var Ball = function(_column,_width,_speed) {
 		}
 		this.removeBall = function(){
 		//	console.log("this ball",this.column.index,id);
-			GameBord.removeChild(this.img); 
+			this.changeImageOnRemove();
+			//GameBord.removeChild(this.img); 
 		}
 
 		this.getRandomColor = function(){
@@ -105,20 +107,45 @@ var Ball = function(_column,_width,_speed) {
 			//TODO change Colors to images 
 			//TODO range should be minnmum 5 
 
-			var x= Math.ceil(Math.random()*3)
+			var x= Math.ceil(  (Math.random()* 5) * ( Math.random()* 5) % 5 ) ; 
 			
-			randomColor = "";
-			if(x == 1){
+			var randomColor = "";
+			/*if(x == 1){
 				randomColor = "red";
+
 			}else if (x == 2) {
 				randomColor = "blue";
 			}else if (x == 3) {
 				randomColor = "green";
 			}
-			return randomColor;
-			//return "red";
+			
+			*/
+			
+			return x;
+			
 		}
 
+		this.changeImageOnRemove = function(){
+
+			//this image change the image of currrent ball before it will be deleted 
+			//wait a start timeout before removing 
+
+			var temp = this.img.src;
+			var tembBall = this;
+
+			//if( this.color == 1  || this.color == 1 || this.color == 1)
+			
+			if(tembBall.color == 1 || tembBall.color == 3 )
+				{tembBall.img.src = "../img/plol.jpg";}
+			else {tembBall.img.src = "../img/pbad.jpg";}
+			setTimeout(function(){
+				tembBall.img.src = temp ;
+				GameBord.removeChild(tembBall.img); 
+			}, 500);
+			
+
+
+		}
 
 
 	

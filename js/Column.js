@@ -22,9 +22,10 @@ var Column = function(_surface,_width,_index){
 			this.surface = this.balls[row].bottom;
 			console.log("surface ",this.surface);
 			delete this.balls.splice(row,1);	
+			//this.column.normalize(row);
 		}
 		
-		checkIfGameEnded();
+		//checkIfGameEnded();
 	}
 	this.addBall = function(ball){
 
@@ -33,12 +34,14 @@ var Column = function(_surface,_width,_index){
 		//then added to column's balls array  
 		//then increase surface of this column
 		
-		checkIfGameEnded();
+		//checkIfGameEnded();
 	
 		if(!GameEnded){
 			var id = this.balls.length;
 			this.balls.push(ball);
 			this.increaseSurface();
+			//chickMatch();
+			if(checkIfGameEnded)
 			CurrentBall = creatrRandomBall(true,-1);
 		}
 		
