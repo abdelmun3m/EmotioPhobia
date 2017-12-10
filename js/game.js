@@ -6,8 +6,6 @@ window.addEventListener("load",function(){
 
 	var Name = window.location.href.split("?")[1].split("&")[0].split("=")[1];
 	var Level = window.location.href.split("?")[1].split("&")[1].split("=")[1];
-
-
 	if(Name){
 
 		welcome.innerText = "Welcome "+ Name;
@@ -16,11 +14,15 @@ window.addEventListener("load",function(){
 
 
 		if(Level == 1){
+			//easy
 			objectSpeed = 5 ;
+			gameTimerDuration = 2;
 		}else if(Level == 2){
 			objectSpeed = 8;
+			gameTimerDuration = 2;
 		}else if(Level == 3){
 			objectSpeed = 10; 
+			gameTimerDuration = 3;
 		}
 		StartButton.onclick = function(){
 			StartGame();
@@ -50,6 +52,8 @@ window.addEventListener("load",function(){
 function StartGame(){
 
 
+
+
 	for(i =0 ; i < gameColumnsNumber ; i++){
 
 		columns[i] = new Column(intialsurface,elementWidth,i);
@@ -58,7 +62,6 @@ function StartGame(){
 		for(var j = 0 ; j <  randomStaticBallinColumn ; j++) 
 			creatrRandomBall(false,i)//static Ball 
 	}
-	
 
 		window.addEventListener("keydown",function(event){
 				
@@ -220,6 +223,7 @@ chickMatch = function(ball){
 
 	
 	var flag = 0;
+	var RandomeRemoveImage = Math.ceil(Math.random()*2);
 	//for(var i = col-2 ; i <= col + 2 ; i++){
 	for(var i = 0 ; i <= 9 ; i++){
 		//loop on every column in range -2 -> +2 of current ball 
@@ -231,7 +235,7 @@ chickMatch = function(ball){
 			console.log('remove horizontal',dEnd2 , dStart2);
 			/*columns[i].removeBall( (row + (i-col)));
 			columns[i].normalize((row + (i-col)));*/
-			onDeletedAnimation(i,(row + (i-col)));
+			onDeletedAnimation(i,(row + (i-col)), RandomeRemoveImage);
 
 		}
 
@@ -241,7 +245,7 @@ chickMatch = function(ball){
 			console.log('remove diagonal 1',dEnd1 , dStart1);
 			/*columns[i].removeBall( (row + (col-i)));
 			columns[i].normalize((row + (col-i)));*/
-			onDeletedAnimation(i,(row + (col-i)));
+			onDeletedAnimation(i,(row + (col-i)) , RandomeRemoveImage);
 
 		}
 
@@ -252,7 +256,7 @@ chickMatch = function(ball){
 				console.log('remove diagonal 2',vEnd-vStart);
 				/*columns[i].removeBall(row);
 				columns[i].normalize(row);*/
-				onDeletedAnimation(i,row );
+				onDeletedAnimation(i,row , RandomeRemoveImage);
 			}
 		}
 
@@ -266,7 +270,7 @@ chickMatch = function(ball){
 			for(var i = eDown ; i >= sDown ; i--){
 				console.log('remove down',sDown,eDown);
 				//columns[col].removeBall(i);
-				onDeletedAnimation(col,i);
+				onDeletedAnimation(col,i , RandomeRemoveImage);
 			}
 			addMatch(matchNum-1);
 			//columns[col].normalize(sDown);
@@ -279,7 +283,7 @@ chickMatch = function(ball){
 		console.log(matches);
 		/*columns[col].removeBall(row);
 		columns[col].normalize(row);*/
-		onDeletedAnimation(col,row);
+		onDeletedAnimation(col,row , RandomeRemoveImage);
 	}
 
 
@@ -327,21 +331,38 @@ endGame=function(lose){
 	clearInterval(clockTimer);
 	CurrentBall = null;
 	if(lose == 1){
-		alert("Sorry! You lose the game");
+
+		var playAgain = confirm("Sorry! you lose the game Do you like to play Again");
+		if(!playAgain){
+			window.location = "../Start.html";
+		}else{
+			window.location = window.location.href;
+		}
+
 	}else if(lose == 2){
-		alert("you Won");
+		var playAgain = confirm("You Won Do you like To play again");
+		if(!playAgain){
+			window.location = "../Start.html";
+		}else{
+			window.location = window.location.href;
+		}
+
 	}else if(lose == 3){
 
-		alert("Time Out");
+		var playAgain = confirm("Sorry! time Out Do you like To play again");
+		if(!playAgain){
+			window.location = "../Start.html";
+		}else{
+			window.location = window.location.href;
+		}
 	}
 }
 
-onDeletedAnimation=function(col , row){
 
 
+onDeletedAnimation=function(col , row,removeImage){
 	//change Imag of deleted balls before delete
-	columns[col].balls[row].changeImageOnRemove();
-
+	columns[col].balls[row].changeImageOnRemove(removeImage);
 	setTimeout(function(){
 		columns[col].removeBall(row);
 		columns[col].normalize(row);
@@ -365,7 +386,7 @@ addMatch=function(match){
 startTimer =  function(){
 
 	var second = 0;
-	var mint = 0;
+	var mint = gameTimerDuration;
 	
 
 
@@ -374,10 +395,10 @@ startTimer =  function(){
 	}
 
 	clockTimer = setInterval(function(){
-		second++;
-	if(second > 59){
-		mint++;
-		second = 0 ;
+		second--;
+	if(second < 0){
+		mint--;
+		second = 59 ;
 	}
 
 	Ssecond = second ; 
@@ -385,20 +406,26 @@ startTimer =  function(){
 	if(second < 10){
 		Ssecond = "0"+second;
 	}
-
-	/*if(mint < 10){
+	if(mint < 10){
 		Smint = "0"+mint;
-	}*/
-	if(mint >= gameTimerDuration){
+	}
+
+
+	if(mint  < 0 ){
 		/*clearInterval(clockTimer);
 		GameEnded = true;*/
 		endGame(3);//time out
 
+	}else{
+		
+		if(mint < 1){
+		timer.style.color = "red";
+		}
+		timer.innerText = Smint + " : " + Ssecond;
+	
 	}
 
-
-	timer.innerText = Smint + " : " + Ssecond;
-
+	
 	},1000);
 
 

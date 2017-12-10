@@ -44,7 +44,7 @@ var Ball = function(_column,_width,_speed) {
 			this. bottom = this.positionY + this.height;
 			this.color = this.getRandomColor();
 			//this.img.style.background = this.color;
-			this.img.src = "../img/p"+this.color+".jpg";
+			this.img.src = "../img/p"+this.color+".png";
 		}
 		this.falling = function(){
 			var t = this;
@@ -125,19 +125,20 @@ var Ball = function(_column,_width,_speed) {
 			
 		}
 
-		this.changeImageOnRemove = function(){
+		this.changeImageOnRemove = function(randomImage){
 
 			//this image change the image of currrent ball before it will be deleted 
 			//wait a start timeout before removing 
 
 			var temp = this.img.src;
-			var tembBall = this;
-
+			//var tembBall = this;
+			this.img.src = "../img/plol"+randomImage+".png";
 			//if( this.color == 1  || this.color == 1 || this.color == 1)
 			
-			if(tembBall.color == 2 || tembBall.color == 4 )
+
+			/*if(tembBall.color == 2 || tembBall.color == 4 )
 				{tembBall.img.src = "../img/plol.jpg";}
-			else {tembBall.img.src = "../img/pbad.jpg";}
+			else {tembBall.img.src = "../img/pbad.jpg";}*/
 			
 			/*setTimeout(function(){
 				tembBall.img.src = temp ;

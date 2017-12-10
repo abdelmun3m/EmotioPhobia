@@ -1,0 +1,60 @@
+
+body{
+
+	
+	background-image: url('../img/back3.jpg');
+	background-repeat:no-repeat;
+   background-size:cover;
+}
+
+#userData{
+	
+	margin: 50px auto;
+	padding: 10px;
+	border : 1px solid black; 
+	text-align: left;
+	width : 400px;
+}
+
+#userData div{
+
+	margin-bottom: 10px; 
+	width: 100%;
+	text-align: center;
+}
+#userData span{
+
+	display: inline-block;
+	font-size: 20px;
+	width: 100px;
+
+}
+
+#userData input {
+
+	width: 150px;
+	height: 30px;
+	border-radius: 5px;
+
+}
+
+#userData select{
+
+	outline-width: 20px;
+	width: 150px;
+	height: 30px;
+
+}
+#userData div button{
+
+	width: 150px;
+	height: 30px;
+}
+
+#dataError{
+	
+	visibility: hidden;
+	color: red;
+
+
+}

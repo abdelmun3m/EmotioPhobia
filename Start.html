@@ -3,43 +3,33 @@
 <head>
 	<title></title>
 
+	<link rel="stylesheet" type="text/css" href="css/Start.css">
 	<script type="text/javascript">
-		
 
 	window.addEventListener("load",function(){
-
-//		StartGame();
-
-
 	
 		Start.onclick = onStartButtonClick;
-
 
 	});
 
 
  	onStartButtonClick =  function(){
 
+		var Name = userData.getElementsByTagName("input")[0].value;
+		var level = userData.getElementsByTagName("select")[0].value;
 
-	var Name = userData.getElementsByTagName("input")[0].value;
-	var level = userData.getElementsByTagName("select")[0].value;
-	//console.log(Name);
+		if(Name){
 
-	if(Name){
-		dataError.style.visibility = "hidden";
-		//StartGame();
+			dataError.style.visibility = "hidden";
+			window.location = "html/bord.html?user="+Name+"&level="+level;
+		}
+		else{
 
-		window.location = "html/bord.html?user="+Name+"&level="+level;
-	}
-	else{
+			dataError.style.visibility = "visible";
 
-
-		dataError.style.visibility = "visible";
-
+		}
 
 	}
-
-}
 
 	</script>
 </head>
@@ -50,9 +40,10 @@
 
 
 
-		<div id="userData">
+	<div id="userData">
 		
-		<div><span>Enter Your name  </span><input type="Text" ></div>
+		<div><span>User Name  </span><input type="Text" ></div>
+	
 		<div><span>Level </span>
 			<select name="level">
 				<option value="1">Easy</option>
@@ -60,9 +51,14 @@
 				<option value="3">Hard</option>
 			</select>
 		</div>
+	
+		<div>
 		<BUTTON id="Start">Start Game</BUTTON>
-		<span id="dataError" style="visibility: hidden;">
-		Please Enter You Name And Select a level To Start the game </span>
+		</div>
+		<div id="dataError">
+		Please Enter You Name And Select a level To Start the game </div>
+	
+
 	</div>
 
 
